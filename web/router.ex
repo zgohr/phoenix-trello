@@ -17,7 +17,7 @@ defmodule PhoenixTrello.Router do
     pipe_through :api
 
     scope "/v1" do
-      post "/registrations", RegistrationsController, :create
+      post "/registrations", RegistrationController, :create
     end
   end
 
