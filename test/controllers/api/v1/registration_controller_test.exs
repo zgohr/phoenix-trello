@@ -11,19 +11,13 @@ defmodule PhoenixTrello.RegistrationControllerTest do
 
   test "create responds", %{conn: conn} do
 
-    try do
-      response = conn
-      |> post(registration_path(conn, :create, user: @valid_attrs))
-      |> json_response(200)
+    response = conn
+    |> post(registration_path(conn, :create, user: @valid_attrs))
+    |> json_response(201)
 
-      expected = %{}
+    assert response |> Map.keys == ["jwt", "user"]
+    assert response["user"] |> Map.keys |> Enum.sort == ["email", "first_name", "id", "last_name"]
 
-      assert response == expected
-
-    rescue
-      # Eat the error for now since the sessions path is not yet avail
-      e in UndefinedFunctionError -> e
-    end
   end
 
 end

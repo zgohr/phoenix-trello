@@ -10,7 +10,7 @@ defmodule PhoenixTrello.RegistrationController do
 
     case Repo.insert(changeset) do
       {:ok, user} ->
-        {:ok, jwt, _full_claims} = Guardian.encode_and_sign(user, :token)
+        {:ok, jwt, _full_claims} = user |> Guardian.encode_and_sign(:token)
 
         conn
         |> put_status(:created)
