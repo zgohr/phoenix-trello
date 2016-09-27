@@ -26995,12 +26995,17 @@
 	
 	var _registration2 = _interopRequireDefault(_registration);
 	
+	var _boards = __webpack_require__(291);
+	
+	var _boards2 = _interopRequireDefault(_boards);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.default = (0, _redux.combineReducers)({
 	  routing: _reactRouterRedux.routerReducer,
 	  session: _session2.default,
-	  registration: _registration2.default
+	  registration: _registration2.default,
+	  boards: _boards2.default
 	});
 
 /***/ },
@@ -27062,7 +27067,13 @@
 	  SESSIONS_ERROR: 'SESSIONS_ERROR',
 	  REGISTRATIONS_ERROR: 'REGISTRATIONS_ERROR',
 	
-	  SOCKET_CONNECTED: 'SOCKET_CONNECTED'
+	  SOCKET_CONNECTED: 'SOCKET_CONNECTED',
+	
+	  BOARDS_FETCHING: 'BOARDS_FETCHING',
+	  BOARDS_RECEIVED: 'BOARDS_RECEIVED',
+	  BOARDS_SHOW_FORM: 'BOARDS_SHOW_FORM',
+	  BOARDS_NEW_BOARD_CREATED: 'BOARDS_NEW_BOARD_CREATED',
+	  BOARDS_CREATE_ERROR: 'BOARDS_CREATE_ERROR'
 	};
 	
 	exports.default = Constants;
@@ -31876,6 +31887,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(6);
@@ -31884,7 +31897,23 @@
 	
 	var _reactRedux = __webpack_require__(254);
 	
+	var _classnames = __webpack_require__(284);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	var _utils = __webpack_require__(267);
+	
+	var _boards = __webpack_require__(290);
+	
+	var _boards2 = _interopRequireDefault(_boards);
+	
+	var _card = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../components/boards/card\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var _card2 = _interopRequireDefault(_card);
+	
+	var _form = __webpack_require__(285);
+	
+	var _form2 = _interopRequireDefault(_form);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31893,11 +31922,6 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	// import classnames from 'classnames';
-	
-	// import Actions from '../../actions/boards';
-	// import BoardCard from '../../components/boards/card';
-	// import BoardForm from '../../components/boards/form';
 	
 	var HomeIndexView = function (_React$Component) {
 	  _inherits(HomeIndexView, _React$Component);
@@ -31912,11 +31936,117 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      (0, _utils.setDocumentTitle)('Boards');
+	
+	      var dispatch = this.props.dispatch;
+	
+	      dispatch(_boards2.default.fetchBoards());
+	    }
+	  }, {
+	    key: '_renderOwnedBoards',
+	    value: function _renderOwnedBoards() {
+	      var fetching = this.props.fetching;
+	
+	
+	      var content = false;
+	
+	      var iconClasses = (0, _classnames2.default)({
+	        fa: true,
+	        'fa-user': !fetching,
+	        'fa-spinner': fetching,
+	        'fa-spin': fetching
+	      });
+	
+	      if (!fetching) {
+	        content = _react2.default.createElement(
+	          'div',
+	          { className: 'boards-wrapper' },
+	          this._renderBoards.call(this, this.props.ownedBoards),
+	          this._renderAddNewBoard.call(this)
+	        );
+	      }
+	
+	      return _react2.default.createElement(
+	        'section',
+	        null,
+	        _react2.default.createElement(
+	          'header',
+	          { className: 'view-header' },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            _react2.default.createElement('i', { className: iconClasses }),
+	            ' My Boards'
+	          )
+	        ),
+	        content
+	      );
+	    }
+	  }, {
+	    key: '_renderBoards',
+	    value: function _renderBoards(boards) {
+	      var _this2 = this;
+	
+	      return boards.map(function (board) {
+	        return _react2.default.createElement(_card2.default, _extends({
+	          key: board.id,
+	          dispatch: _this2.props.dispatch
+	        }, board));
+	      });
+	    }
+	  }, {
+	    key: '_renderAddNewBoard',
+	    value: function _renderAddNewBoard() {
+	      var _props = this.props;
+	      var showFOrm = _props.showFOrm;
+	      var dispatch = _props.dispatch;
+	      var formErrors = _props.formErrors;
+	
+	
+	      if (!showForm) return this._renderAddButton();
+	
+	      return _react2.default.createElement(_form2.default, {
+	        dispatch: dispatch,
+	        errors: formErrors,
+	        onCancelClick: this._handleCancelClick.bind(this) });
+	    }
+	  }, {
+	    key: '_renderAddButton',
+	    value: function _renderAddButton() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'board add-new', onClick: this._handleAddNewClick.bind(this) },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'inner' },
+	          _react2.default.createElement(
+	            'a',
+	            { id: 'add_new_board' },
+	            'Add new board...'
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: '_handleAddNewClick',
+	    value: function _handleAddNewClick() {
+	      var dispatch = this.props.dispatch;
+	
+	
+	      dispatch(_boards2.default.showForm(true));
+	    }
+	  }, {
+	    key: '_handleCancelClick',
+	    value: function _handleCancelClick() {
+	      this.props.dispatch(_boards2.default.showForm(false));
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'view-container boards index' });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'view-container boards index' },
+	        this._renderOwnedBoards.call(this)
+	      );
 	    }
 	  }]);
 	
@@ -31924,7 +32054,7 @@
 	}(_react2.default.Component);
 	
 	var mapStateToProps = function mapStateToProps(state) {
-	  [];
+	  state.boards;
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(HomeIndexView);
@@ -32245,6 +32375,482 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SessionsNew);
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactPageClick = __webpack_require__(286);
+	
+	var _reactPageClick2 = _interopRequireDefault(_reactPageClick);
+	
+	var _boards = __webpack_require__(290);
+	
+	var _boards2 = _interopRequireDefault(_boards);
+	
+	var _utils = __webpack_require__(267);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var BoardForm = function (_ReactComponent) {
+	  _inherits(BoardForm, _ReactComponent);
+	
+	  function BoardForm() {
+	    _classCallCheck(this, BoardForm);
+	
+	    return _possibleConstructorReturn(this, (BoardForm.__proto__ || Object.getPrototypeOf(BoardForm)).apply(this, arguments));
+	  }
+	
+	  _createClass(BoardForm, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.refs.name.focus();
+	    }
+	  }, {
+	    key: '_handleSubmit',
+	    value: function _handleSubmit(e) {
+	      e.preventDefault();
+	
+	      var dispatch = this.props.dispatch;
+	      var name = this.refs.name;
+	
+	
+	      var data = {
+	        name: name.value
+	      };
+	
+	      dispatch(_boards2.default.create(data));
+	    }
+	  }, {
+	    key: '_handleCancelClick',
+	    value: function _handleCancelClick(e) {
+	      e.preventDefault();
+	
+	      this.props.onCancelClick();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var errors = this.props.errors;
+	
+	
+	      return _react2.default.createElement(
+	        _reactPageClick2.default,
+	        { onClick: this._handleCancelClick.bind(this) },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'board form' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'inner' },
+	            _react2.default.createElement(
+	              'h4',
+	              null,
+	              'New Board'
+	            ),
+	            _react2.default.createElement(
+	              'form',
+	              { id: 'new_board_form', onSubmit: this._handleSubmit.bind(this) },
+	              _react2.default.createElement('input', { ref: 'name', id: 'board_name', type: 'text', placeholder: 'Board name', required: 'true' }),
+	              (0, _utils.renderErrorsFor)(errors, 'name'),
+	              _react2.default.createElement(
+	                'button',
+	                { type: 'submit' },
+	                'Create board'
+	              ),
+	              ' or ',
+	              _react2.default.createElement(
+	                'a',
+	                { href: '#', onClick: this._handleCancelClick.bind(this) },
+	                'cancel'
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return BoardForm;
+	}(ReactComponent);
+	
+	exports.default = BoardForm;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	// Babel6 does not hack the default behaviour of ES Modules anymore, so we should export
+	
+	var PageClick = __webpack_require__(287).default;
+	
+	module.exports = PageClick;
+	//# sourceMappingURL=index.js.map
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(6);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _ReactComponentWithPureRenderMixin = __webpack_require__(288);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var PageClick = _react2.default.createClass({
+	  displayName: 'PageClick',
+	
+	  propTypes: {
+	    children: _react2.default.PropTypes.node.isRequired,
+	    onClick: _react2.default.PropTypes.func.isRequired,
+	    onMouseDown: _react2.default.PropTypes.func,
+	    onTouchStart: _react2.default.PropTypes.func,
+	    outsideOnly: _react2.default.PropTypes.bool
+	  },
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      outsideOnly: true
+	    };
+	  },
+	  componentWillMount: function componentWillMount() {
+	    this.insideClick = false;
+	  },
+	  componentDidMount: function componentDidMount() {
+	    global.window.addEventListener('touchstart', this.onDocumentClick, false);
+	    global.window.addEventListener('touchend', this.onDocumentMouseUp, false);
+	    global.window.addEventListener('mousedown', this.onDocumentClick, false);
+	    global.window.addEventListener('mouseup', this.onDocumentMouseUp, false);
+	  },
+	
+	
+	  shouldComponentUpdate: _ReactComponentWithPureRenderMixin.shouldComponentUpdate,
+	
+	  componentWillUnmount: function componentWillUnmount() {
+	    global.window.removeEventListener('touchstart', this.onDocumentClick, false);
+	    global.window.removeEventListener('touchend', this.onDocumentMouseUp, false);
+	    global.window.removeEventListener('mousedown', this.onDocumentClick, false);
+	    global.window.removeEventListener('mouseup', this.onDocumentMouseUp, false);
+	  },
+	  onDocumentClick: function onDocumentClick() {
+	    var _props;
+	
+	    if (this.insideClick) {
+	      return;
+	    }
+	    (_props = this.props).onClick.apply(_props, arguments);
+	  },
+	  onDocumentMouseUp: function onDocumentMouseUp() {
+	    this.insideClick = false;
+	  },
+	  onMouseDown: function onMouseDown() {
+	    this.insideClick = true;
+	    if (this.props.onMouseDown) {
+	      var _props2;
+	
+	      (_props2 = this.props).onMouseDown.apply(_props2, arguments);
+	    }
+	  },
+	  onTouchStart: function onTouchStart() {
+	    this.insideClick = true;
+	    if (this.props.onTouchStart) {
+	      var _props3;
+	
+	      (_props3 = this.props).onTouchStart.apply(_props3, arguments);
+	    }
+	  },
+	  render: function render() {
+	    var props = this.props.outsideOnly ? {
+	      onMouseDown: this.onMouseDown,
+	      onTouchStart: this.onTouchStart
+	    } : {};
+	
+	    return _react2.default.cloneElement(_react2.default.Children.only(this.props.children), props);
+	  }
+	});
+	
+	exports.default = PageClick;
+	//# sourceMappingURL=PageClick.js.map
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactComponentWithPureRenderMixin
+	 */
+	
+	'use strict';
+	
+	var shallowCompare = __webpack_require__(289);
+	
+	/**
+	 * If your React component's render function is "pure", e.g. it will render the
+	 * same result given the same props and state, provide this Mixin for a
+	 * considerable performance boost.
+	 *
+	 * Most React components have pure render functions.
+	 *
+	 * Example:
+	 *
+	 *   var ReactComponentWithPureRenderMixin =
+	 *     require('ReactComponentWithPureRenderMixin');
+	 *   React.createClass({
+	 *     mixins: [ReactComponentWithPureRenderMixin],
+	 *
+	 *     render: function() {
+	 *       return <div className={this.props.className}>foo</div>;
+	 *     }
+	 *   });
+	 *
+	 * Note: This only checks shallow equality for props and state. If these contain
+	 * complex data structures this mixin may have false-negatives for deeper
+	 * differences. Only mixin to components which have simple props and state, or
+	 * use `forceUpdate()` when you know deep data structures have changed.
+	 */
+	var ReactComponentWithPureRenderMixin = {
+	  shouldComponentUpdate: function (nextProps, nextState) {
+	    return shallowCompare(this, nextProps, nextState);
+	  }
+	};
+	
+	module.exports = ReactComponentWithPureRenderMixin;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	* @providesModule shallowCompare
+	*/
+	
+	'use strict';
+	
+	var shallowEqual = __webpack_require__(122);
+	
+	/**
+	 * Does a shallow comparison for props and state.
+	 * See ReactComponentWithPureRenderMixin
+	 */
+	function shallowCompare(instance, nextProps, nextState) {
+	  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
+	}
+	
+	module.exports = shallowCompare;
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	var _reactRouterRedux = __webpack_require__(227);
+	
+	var _utils = __webpack_require__(267);
+	
+	var _current_board = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./current_board\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	
+	var _current_board2 = _interopRequireDefault(_current_board);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Actions = {
+	  fetchBoards: function fetchBoards() {
+	    return function (dispatch) {
+	      dispatch({ type: _constants2.default.BOARDS_FETCHING });
+	
+	      (0, _utils.httpGet)('/api/v1/boards').then(function (data) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_RECEIVED,
+	          ownedBoards: data.owned_boards
+	        });
+	      });
+	    };
+	  },
+	  showForm: function showForm(show) {
+	    return function (dispatch) {
+	      dispatch({
+	        type: _constants2.default.BOARDS_SHOW_FORM,
+	        show: show
+	      });
+	    };
+	  },
+	  create: function create(data) {
+	    return function (dispatch) {
+	      (0, _utils.httpPost)('/api/v1/boards', { board: data }).then(function (data) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_NEW_BOARD_CREATED,
+	          board: data
+	        });
+	        dispatch((0, _reactRouterRedux.push)('/boards/' + data.id));
+	      }).catch(function (error) {
+	        error.response.json().then(function (json) {
+	          dispatch({
+	            type: _constants2.default.BOARDS_CREATE_ERROR,
+	            errors: json.errors
+	          });
+	        });
+	      });
+	    };
+	  }
+	};
+	
+	exports.default = Actions;
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = reducer;
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var initialState = {
+	  ownedBoards: [],
+	  showForm: false,
+	  formErrors: null,
+	  fetching: true
+	};
+	
+	function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  switch (action.type) {
+	    case _constants2.default.BOARDS_FETCHING:
+	      return _extends({}, state, { fetching: true });
+	    case _constants2.default.BOARDS_RECEIVED:
+	      return _extends({}, state, { ownedBoards: action.ownedBoards, fetching: false });
+	    case _constants2.default.BOARDS_SHOW_FORM:
+	      return _extends({}, state, { showForm: action.show });
+	    case _constants2.default.BOARDS_CREATE_ERROR:
+	      return _extends({}, state, { formErrors: action.errors });
+	    case _constants2.default.BOARdS_NEW_BOARD_CREATED:
+	      var ownedBoards = state.ownedBoards;
+	
+	      return _extends({}, state, { ownedBoards: [action.board].concat(ownedBoards) });
+	    default:
+	      return state;
+	  }
+	}
 
 /***/ }
 /******/ ]);
