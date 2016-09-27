@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router;'
+import { Link } from 'react-router';
 
 import { setDocumentTitle } from '../../utils';
 import Actions from '../../actions/sessions';

@@ -34,6 +34,10 @@ export function httpPost(url, data) {
     .then(parseJSON);
 }
 
+export function setDocumentTitle(title) {
+  document.title = `${title} | Phoenix Trello`;
+}
+
 export function renderErrorsFor(errors, ref) {
   if (!errors) return false;
 
