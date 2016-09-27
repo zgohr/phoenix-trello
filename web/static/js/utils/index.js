@@ -2,6 +2,17 @@ import React from 'react';
 import fetch from 'isomorphic-fetch';
 import { polyfill } from 'es6-promise';
 
+const defaultHeaders = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
+
+function buildHeaders() {
+  const authToken = localStorage.getItem('phoenixAuthToken');
+
+  return { ...defaultHeaders, authorization: authToken };
+}
+
 export function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
@@ -17,18 +28,21 @@ export function parseJSON(response) {
 }
 
 export function httpPost(url, data) {
-  const headers = {
-    Authorization: localStorage.getItem('phoenixAuthToken'),
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  };
-
   const body = JSON.stringify(data);
 
   return fetch(url, {
     method: 'post',
-    headers: headers,
+    headers: buildHeaders(),
     body: body,
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
+export function httpDelete(url) {
+  return fetch(url, {
+    method: 'delete',
+    headers: buildHeaders(),
   })
     .then(checkStatus)
     .then(parseJSON);

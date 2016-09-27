@@ -1,4 +1,4 @@
-import { routeActions } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import Constants from '../constants';
 import { Socket } from 'phoenix';
 import { httpGet, httpPost, httpDelete } from '../utils';
@@ -25,7 +25,7 @@ const Actions = {
         .then((data) => {
           localStorage.setItem('phoenixAuthToken', data.jwt);
           setCurrentUser(dispatch, data.user);
-          dispatch(routeActions.push('/'));
+          dispatch(push('/'));
         })
         .catch((error) => {
           error.response.json()
@@ -38,6 +38,21 @@ const Actions = {
         });
     };
   },
+  signOut: () => {
+    return dispatch => {
+      httpDelete('/api/v1/sessions')
+        .then((data) => {
+          localStorage.removeItem('phoenixAuthToken');
+
+          dispatch({
+            type: Constants.USER_SIGNED_OUT,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+  },
   currentUser: () => {
     return dispatch => {
       httpGet('/api/v1/current_user')
@@ -46,9 +61,31 @@ const Actions = {
         })
         .catch((error) => {
           console.log(error);
-          dispatch(routeActions.push('/sign_in'));
+          dispatch(push('/sign_in'));
         });
     };
+  },
+  setCurrentUser(dispatch, user) {
+    dispatch({
+      type: Constants.CURRENT_USER,
+      currentUser: user,
+    });
+
+    const socket = new Socket('/socket', {
+      params: {token: localStorage.getItem('phoenixAuthToken')},
+    });
+
+    socket.connect();
+
+    const channel = socket.channel(`users:${user.id}`);
+
+    channel.join().receive('ok', () => {
+      dispatch({
+        type: Constants.SOCKET_CONNECTED,
+        socket: socket,
+        channel: channel,
+      });
+    });
   },
   // ...
 };
