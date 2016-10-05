@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import { setDocumentTitle } from '../../utils';
 import Actions from '../../actions/boards';
-import BoardCard from '../../components/boards/card';
+// import BoardCard from '../../components/boards/card';
 import BoardForm from '../../components/boards/form';
 
 class HomeIndexView extends React.Component {
@@ -56,7 +56,7 @@ class HomeIndexView extends React.Component {
   }
 
   _renderAddNewBoard() {
-    let { showFOrm, dispatch, formErrors } = this.props;
+    let { showForm, dispatch, formErrors } = this.props;
 
     if (!showForm) return this._renderAddButton();
 
@@ -79,9 +79,7 @@ class HomeIndexView extends React.Component {
   }
 
   _handleAddNewClick() {
-    let { dispatch } = this.props;
-
-    dispatch(Actions.showForm(true))
+    this.props.dispatch(Actions.showForm(true))
   }
 
   _handleCancelClick() {
@@ -97,8 +95,8 @@ class HomeIndexView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state) => (
   state.boards
-};
+);
 
 export default connect(mapStateToProps)(HomeIndexView);

@@ -3,7 +3,7 @@ import PageClick from 'react-page-click';
 import Actions from '../../actions/boards';
 import { renderErrorsFor } from '../../utils';
 
-export default class BoardForm extends ReactComponent {
+export default class BoardForm extends React.Component {
   componentDidMount() {
     this.refs.name.focus();
   }

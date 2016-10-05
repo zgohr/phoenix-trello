@@ -27,6 +27,14 @@ export function parseJSON(response) {
   return response.json();
 }
 
+export function httpGet(url) {
+  return fetch(url, {
+    headers: buildHeaders(),
+  })
+    .then(checkStatus)
+    .then(parseJSON);
+}
+
 export function httpPost(url, data) {
   const body = JSON.stringify(data);
 

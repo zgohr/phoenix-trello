@@ -2,12 +2,13 @@ defmodule PhoenixTrello.Board do
   use PhoenixTrello.Web, :model
 
   alias __MODULE__
+  alias PhoenixTrello.User
 
   @derive {Poison.Encoder, only: [:id, :name, :user]}
 
   schema "boards" do
     field :name, :string
-    belongs_to :user, PhoenixTrello.User
+    belongs_to :user, User
 
     timestamps()
   end
@@ -21,5 +22,9 @@ defmodule PhoenixTrello.Board do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+  def preload_all(query) do
+    from b in query, preload: [:user]
   end
 end

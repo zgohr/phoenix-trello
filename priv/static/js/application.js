@@ -79,7 +79,7 @@
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _root = __webpack_require__(253);
+	var _root = __webpack_require__(254);
 	
 	var _root2 = _interopRequireDefault(_root);
 	
@@ -26995,7 +26995,7 @@
 	
 	var _registration2 = _interopRequireDefault(_registration);
 	
-	var _boards = __webpack_require__(291);
+	var _boards = __webpack_require__(253);
 	
 	var _boards2 = _interopRequireDefault(_boards);
 	
@@ -27073,7 +27073,11 @@
 	  BOARDS_RECEIVED: 'BOARDS_RECEIVED',
 	  BOARDS_SHOW_FORM: 'BOARDS_SHOW_FORM',
 	  BOARDS_NEW_BOARD_CREATED: 'BOARDS_NEW_BOARD_CREATED',
-	  BOARDS_CREATE_ERROR: 'BOARDS_CREATE_ERROR'
+	  BOARDS_CREATE_ERROR: 'BOARDS_CREATE_ERROR',
+	
+	  CURRENT_BOARD_FETCHING: 'CURRENT_BOARD_FETCHING',
+	  BOARDS_SET_CURRENT_BOARD: 'BOARDS_SET_CURRENT_BOARD',
+	  CURRENT_BOARD_CONNECTED_TO_CHANNEL: 'CURRENT_BOARD_CONNECTED_TO_CHANNEL'
 	};
 	
 	exports.default = Constants;
@@ -27124,11 +27128,60 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	exports.default = reducer;
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var initialState = {
+	  ownedBoards: [],
+	  showForm: false,
+	  formErrors: null,
+	  fetching: true
+	};
+	
+	function reducer() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	  switch (action.type) {
+	    case _constants2.default.BOARDS_FETCHING:
+	      return _extends({}, state, { fetching: true });
+	    case _constants2.default.BOARDS_RECEIVED:
+	      return _extends({}, state, { ownedBoards: action.ownedBoards, fetching: false });
+	    case _constants2.default.BOARDS_SHOW_FORM:
+	      return _extends({}, state, { showForm: action.show });
+	    case _constants2.default.BOARDS_CREATE_ERROR:
+	      return _extends({}, state, { formErrors: action.errors });
+	    case _constants2.default.BOARdS_NEW_BOARD_CREATED:
+	      var ownedBoards = state.ownedBoards;
+	
+	      return _extends({}, state, { ownedBoards: [action.board].concat(ownedBoards) });
+	    default:
+	      return state;
+	  }
+	}
+
+/***/ },
+/* 254 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _react = __webpack_require__(6);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(254);
+	var _reactRedux = __webpack_require__(255);
 	
 	var _reactRouter = __webpack_require__(164);
 	
@@ -27136,7 +27189,7 @@
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
-	var _routes = __webpack_require__(261);
+	var _routes = __webpack_require__(262);
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
@@ -27168,7 +27221,7 @@
 	exports.default = Root;
 
 /***/ },
-/* 254 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27176,11 +27229,11 @@
 	exports.__esModule = true;
 	exports.connect = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(255);
+	var _Provider = __webpack_require__(256);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connect = __webpack_require__(258);
+	var _connect = __webpack_require__(259);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -27190,7 +27243,7 @@
 	exports.connect = _connect2["default"];
 
 /***/ },
-/* 255 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27200,11 +27253,11 @@
 	
 	var _react = __webpack_require__(6);
 	
-	var _storeShape = __webpack_require__(256);
+	var _storeShape = __webpack_require__(257);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _warning = __webpack_require__(257);
+	var _warning = __webpack_require__(258);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27274,7 +27327,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 256 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27290,7 +27343,7 @@
 	});
 
 /***/ },
-/* 257 */
+/* 258 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27319,7 +27372,7 @@
 	}
 
 /***/ },
-/* 258 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -27331,19 +27384,19 @@
 	
 	var _react = __webpack_require__(6);
 	
-	var _storeShape = __webpack_require__(256);
+	var _storeShape = __webpack_require__(257);
 	
 	var _storeShape2 = _interopRequireDefault(_storeShape);
 	
-	var _shallowEqual = __webpack_require__(259);
+	var _shallowEqual = __webpack_require__(260);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _wrapActionCreators = __webpack_require__(260);
+	var _wrapActionCreators = __webpack_require__(261);
 	
 	var _wrapActionCreators2 = _interopRequireDefault(_wrapActionCreators);
 	
-	var _warning = __webpack_require__(257);
+	var _warning = __webpack_require__(258);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -27718,7 +27771,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 259 */
+/* 260 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27749,7 +27802,7 @@
 	}
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27766,7 +27819,7 @@
 	}
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27774,11 +27827,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default =
-	// import BoardsShowView from '../views/boards/show';
-	// import CardsShowView from '../views/cards/show';
-	
-	configRoutes;
+	exports.default = configRoutes;
 	
 	var _reactRouter = __webpack_require__(164);
 	
@@ -27786,29 +27835,54 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _main = __webpack_require__(262);
+	var _main = __webpack_require__(263);
 	
 	var _main2 = _interopRequireDefault(_main);
 	
-	var _authenticated = __webpack_require__(263);
+	var _authenticated = __webpack_require__(264);
 	
 	var _authenticated2 = _interopRequireDefault(_authenticated);
 	
-	var _home = __webpack_require__(280);
+	var _home = __webpack_require__(281);
 	
 	var _home2 = _interopRequireDefault(_home);
 	
-	var _new = __webpack_require__(281);
+	var _new = __webpack_require__(290);
 	
 	var _new2 = _interopRequireDefault(_new);
 	
-	var _new3 = __webpack_require__(283);
+	var _new3 = __webpack_require__(292);
 	
 	var _new4 = _interopRequireDefault(_new3);
+	
+	var _show = __webpack_require__(293);
+	
+	var _show2 = _interopRequireDefault(_show);
+	
+	var _sessions = __webpack_require__(266);
+	
+	var _sessions2 = _interopRequireDefault(_sessions);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function configRoutes(store) {
+	  var _ensureAuthenticated = function _ensureAuthenticated(nextState, replace, callback) {
+	    var dispatch = store.dispatch;
+	
+	    var _store$getState = store.getState();
+	
+	    var session = _store$getState.session;
+	    var currentUser = session.currentUser;
+	
+	
+	    if (!currentUser && localStorage.getItem('phoenixAuthToken')) {
+	      dispatch(_sessions2.default.currentUser());
+	    } else if (!localStorage.getItem('phoenixAuthToken')) {
+	      replace('/sign_in');
+	    }
+	
+	    callback();
+	  };
 	
 	  return _react2.default.createElement(
 	    _reactRouter.Route,
@@ -27817,14 +27891,16 @@
 	    _react2.default.createElement('route', { path: '/sign_in', component: _new4.default }),
 	    _react2.default.createElement(
 	      _reactRouter.Route,
-	      { path: '/', component: _authenticated2.default },
-	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default })
+	      { path: '/', component: _authenticated2.default, onEnter: _ensureAuthenticated },
+	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _home2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '/boards/:id', component: _show2.default })
 	    )
 	  );
 	}
+	// import CardsShowView from '../views/cards/show';
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27874,7 +27950,7 @@
 	exports.default = MainLayout;
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27889,9 +27965,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(254);
+	var _reactRedux = __webpack_require__(255);
 	
-	var _header = __webpack_require__(264);
+	var _header = __webpack_require__(265);
 	
 	var _header2 = _interopRequireDefault(_header);
 	
@@ -27957,7 +28033,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(AuthenticatedContainer);
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27975,11 +28051,11 @@
 	
 	var _reactRouter = __webpack_require__(164);
 	
-	var _sessions = __webpack_require__(265);
+	var _sessions = __webpack_require__(266);
 	
 	var _sessions2 = _interopRequireDefault(_sessions);
 	
-	var _reactGravatar = __webpack_require__(272);
+	var _reactGravatar = __webpack_require__(273);
 	
 	var _reactGravatar2 = _interopRequireDefault(_reactGravatar);
 	
@@ -28097,7 +28173,7 @@
 	exports.default = Header;
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28112,9 +28188,9 @@
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
-	var _phoenix = __webpack_require__(266);
+	var _phoenix = __webpack_require__(267);
 	
-	var _utils = __webpack_require__(267);
+	var _utils = __webpack_require__(268);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -28200,7 +28276,7 @@
 	exports.default = Actions;
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function(exports){
@@ -29477,7 +29553,7 @@
 
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29490,6 +29566,7 @@
 	
 	exports.checkStatus = checkStatus;
 	exports.parseJSON = parseJSON;
+	exports.httpGet = httpGet;
 	exports.httpPost = httpPost;
 	exports.httpDelete = httpDelete;
 	exports.setDocumentTitle = setDocumentTitle;
@@ -29499,11 +29576,11 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _isomorphicFetch = __webpack_require__(268);
+	var _isomorphicFetch = __webpack_require__(269);
 	
 	var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 	
-	var _es6Promise = __webpack_require__(270);
+	var _es6Promise = __webpack_require__(271);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29530,6 +29607,12 @@
 	
 	function parseJSON(response) {
 	  return response.json();
+	}
+	
+	function httpGet(url) {
+	  return (0, _isomorphicFetch2.default)(url, {
+	    headers: buildHeaders()
+	  }).then(checkStatus).then(parseJSON);
 	}
 	
 	function httpPost(url, data) {
@@ -29568,19 +29651,19 @@
 	}
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// the whatwg-fetch polyfill installs the fetch() function
 	// on the global object (window or self)
 	//
 	// Return that as the export for use in Webpack, Browserify etc.
-	__webpack_require__(269);
+	__webpack_require__(270);
 	module.exports = self.fetch.bind(self);
 
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports) {
 
 	(function(self) {
@@ -30019,7 +30102,7 @@
 
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
@@ -30154,7 +30237,7 @@
 	function attemptVertx() {
 	  try {
 	    var r = require;
-	    var vertx = __webpack_require__(271);
+	    var vertx = __webpack_require__(272);
 	    vertxNext = vertx.runOnLoop || vertx.runOnContext;
 	    return useVertxTimer();
 	  } catch (e) {
@@ -31179,13 +31262,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9), (function() { return this; }())))
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31198,15 +31281,15 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _md = __webpack_require__(273);
+	var _md = __webpack_require__(274);
 	
 	var _md2 = _interopRequireDefault(_md);
 	
-	var _queryString = __webpack_require__(277);
+	var _queryString = __webpack_require__(278);
 	
 	var _queryString2 = _interopRequireDefault(_queryString);
 	
-	var _isRetina = __webpack_require__(279);
+	var _isRetina = __webpack_require__(280);
 	
 	var _isRetina2 = _interopRequireDefault(_isRetina);
 	
@@ -31332,14 +31415,14 @@
 	module.exports = Gravatar;
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function(){
-	  var crypt = __webpack_require__(274),
-	      utf8 = __webpack_require__(275).utf8,
-	      isBuffer = __webpack_require__(276),
-	      bin = __webpack_require__(275).bin,
+	  var crypt = __webpack_require__(275),
+	      utf8 = __webpack_require__(276).utf8,
+	      isBuffer = __webpack_require__(277),
+	      bin = __webpack_require__(276).bin,
 	
 	  // The core
 	  md5 = function (message, options) {
@@ -31498,7 +31581,7 @@
 
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports) {
 
 	(function() {
@@ -31600,7 +31683,7 @@
 
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports) {
 
 	var charenc = {
@@ -31639,7 +31722,7 @@
 
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports) {
 
 	/*!
@@ -31666,12 +31749,12 @@
 
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	var strictUriEncode = __webpack_require__(192);
-	var objectAssign = __webpack_require__(278);
+	var objectAssign = __webpack_require__(279);
 	
 	function encode(value, opts) {
 		if (opts.encode) {
@@ -31770,7 +31853,7 @@
 
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31859,7 +31942,7 @@
 
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports) {
 
 	module.exports = function() {
@@ -31878,7 +31961,7 @@
 
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31895,21 +31978,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _reactRedux = __webpack_require__(254);
+	var _reactRedux = __webpack_require__(255);
 	
-	var _classnames = __webpack_require__(284);
+	var _classnames = __webpack_require__(282);
 	
 	var _classnames2 = _interopRequireDefault(_classnames);
 	
-	var _utils = __webpack_require__(267);
+	var _utils = __webpack_require__(268);
 	
-	var _boards = __webpack_require__(290);
+	var _boards = __webpack_require__(283);
 	
 	var _boards2 = _interopRequireDefault(_boards);
-	
-	var _card = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../components/boards/card\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-	
-	var _card2 = _interopRequireDefault(_card);
 	
 	var _form = __webpack_require__(285);
 	
@@ -31922,6 +32001,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	// import BoardCard from '../../components/boards/card';
+	
 	
 	var HomeIndexView = function (_React$Component) {
 	  _inherits(HomeIndexView, _React$Component);
@@ -31987,7 +32068,7 @@
 	      var _this2 = this;
 	
 	      return boards.map(function (board) {
-	        return _react2.default.createElement(_card2.default, _extends({
+	        return _react2.default.createElement(BoardCard, _extends({
 	          key: board.id,
 	          dispatch: _this2.props.dispatch
 	        }, board));
@@ -31997,7 +32078,7 @@
 	    key: '_renderAddNewBoard',
 	    value: function _renderAddNewBoard() {
 	      var _props = this.props;
-	      var showFOrm = _props.showFOrm;
+	      var showForm = _props.showForm;
 	      var dispatch = _props.dispatch;
 	      var formErrors = _props.formErrors;
 	
@@ -32029,10 +32110,7 @@
 	  }, {
 	    key: '_handleAddNewClick',
 	    value: function _handleAddNewClick() {
-	      var dispatch = this.props.dispatch;
-	
-	
-	      dispatch(_boards2.default.showForm(true));
+	      this.props.dispatch(_boards2.default.showForm(true));
 	    }
 	  }, {
 	    key: '_handleCancelClick',
@@ -32054,330 +32132,13 @@
 	}(_react2.default.Component);
 	
 	var mapStateToProps = function mapStateToProps(state) {
-	  state.boards;
+	  return state.boards;
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps)(HomeIndexView);
 
 /***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(6);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(254);
-	
-	var _reactRouter = __webpack_require__(164);
-	
-	var _utils = __webpack_require__(267);
-	
-	var _registrations = __webpack_require__(282);
-	
-	var _registrations2 = _interopRequireDefault(_registrations);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var RegistrationsNew = function (_React$Component) {
-	  _inherits(RegistrationsNew, _React$Component);
-	
-	  function RegistrationsNew() {
-	    _classCallCheck(this, RegistrationsNew);
-	
-	    return _possibleConstructorReturn(this, (RegistrationsNew.__proto__ || Object.getPrototypeOf(RegistrationsNew)).apply(this, arguments));
-	  }
-	
-	  _createClass(RegistrationsNew, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      (0, _utils.setDocumentTitle)('Sign up');
-	    }
-	  }, {
-	    key: '_handleSubmit',
-	    value: function _handleSubmit(e) {
-	      e.preventDefault();
-	
-	      var dispatch = this.props.dispatch;
-	
-	
-	      var data = {
-	        first_name: this.refs.firstName.value,
-	        last_name: this.refs.last_name.value,
-	        email: this.refs.email.value,
-	        password: this.refs.password.value,
-	        password_confirmation: this.refs.passwordConfirmation.value
-	      };
-	
-	      dispatch(_registrations2.default.signUp(data));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var errors = this.props.errors;
-	
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'view-container registrations new' },
-	        _react2.default.createElement(
-	          'main',
-	          null,
-	          _react2.default.createElement(
-	            'header',
-	            null,
-	            _react2.default.createElement('div', { className: 'logo' })
-	          ),
-	          _react2.default.createElement(
-	            'form',
-	            { onSubmit: this._handleSubmit.bind(this) },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'firstName', type: 'text', placeholder: 'First Name', require: true }),
-	              (0, _utils.renderErrorsFor)(errors, 'first_name')
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'lastName', type: 'text', placeholder: 'Last Name', require: true }),
-	              (0, _utils.renderErrorsFor)(errors, 'last_name')
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'email', type: 'text', placeholder: 'Email', require: true }),
-	              (0, _utils.renderErrorsFor)(errors, 'email')
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'password', type: 'text', placeholder: 'Password', require: true }),
-	              (0, _utils.renderErrorsFor)(errors, 'password')
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'passwordConfirmation', type: 'text', placeholder: 'Confirm password', require: true }),
-	              (0, _utils.renderErrorsFor)(errors, 'password_confirmation')
-	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { type: 'submit' },
-	              'Sign up'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: '/sign_in' },
-	            'Sign in'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return RegistrationsNew;
-	}(_react2.default.Component);
-	
-	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    errors: state.registration.errors
-	  };
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(RegistrationsNew);
-
-/***/ },
 /* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _reactRouterRedux = __webpack_require__(227);
-	
-	var _constants = __webpack_require__(251);
-	
-	var _constants2 = _interopRequireDefault(_constants);
-	
-	var _utils = __webpack_require__(267);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Actions = {};
-	
-	Actions.signUp = function (data) {
-	  return function (dispatch) {
-	    (0, _utils.httpPost)('/api/v1/registrations', { user: data }).then(function (data) {
-	      localStorage.setItem('phoenixAuthToken', data.jwt);
-	
-	      dispatch({
-	        type: _constants2.default.CURRENT_USER,
-	        currentUser: data.user
-	      });
-	
-	      dispatch((0, _reactRouterRedux.pushPath)('/'));
-	    }).catch(function (error) {
-	      error.response.json().then(function (errorJSON) {
-	        dispatch({
-	          type: Constnats.REGISTRATIONS_ERROR,
-	          errors: errorJSON.errors
-	        });
-	      });
-	    });
-	  };
-	};
-	
-	exports.default = Actions;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(6);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(254);
-	
-	var _reactRouter = __webpack_require__(164);
-	
-	var _utils = __webpack_require__(267);
-	
-	var _sessions = __webpack_require__(265);
-	
-	var _sessions2 = _interopRequireDefault(_sessions);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var SessionsNew = function (_React$Component) {
-	  _inherits(SessionsNew, _React$Component);
-	
-	  function SessionsNew() {
-	    _classCallCheck(this, SessionsNew);
-	
-	    return _possibleConstructorReturn(this, (SessionsNew.__proto__ || Object.getPrototypeOf(SessionsNew)).apply(this, arguments));
-	  }
-	
-	  _createClass(SessionsNew, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      (0, _utils.setDocumentTitle)('Sign in');
-	    }
-	  }, {
-	    key: '_handleSubmit',
-	    value: function _handleSubmit(e) {
-	      e.preventDefault();
-	
-	      var _refs = this.refs;
-	      var email = _refs.email;
-	      var password = _refs.password;
-	      var dispatch = this.props.dispatch;
-	
-	
-	      dispatch(_sessions2.default.signIn(email.value, password.value));
-	    }
-	  }, {
-	    key: '_renderError',
-	    value: function _renderError() {
-	      var error = this.props.error;
-	
-	
-	      if (!error) return false;
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'error' },
-	        error
-	      );
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'view-container sessions new' },
-	        _react2.default.createElement(
-	          'main',
-	          null,
-	          _react2.default.createElement(
-	            'header',
-	            null,
-	            _react2.default.createElement('div', { className: 'logo' })
-	          ),
-	          _react2.default.createElement(
-	            'form',
-	            { onSubmit: this._handleSubmit.bind(this) },
-	            this._renderError.call(this),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'email', type: 'Email', placeholder: 'Email', required: 'true', defaultValue: 'john@phoenix-trello.com' })
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'field' },
-	              _react2.default.createElement('input', { ref: 'password', type: 'password', placeholder: 'Password', required: 'true', defaultValue: '12345678' })
-	            ),
-	            _react2.default.createElement(
-	              'button',
-	              { type: 'submit' },
-	              'Sign in'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _reactRouter.Link,
-	            { to: '/sign_up' },
-	            'Create new account'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return SessionsNew;
-	}(_react2.default.Component);
-	
-	var mapStateToProps = function mapStateToProps(state) {
-	  return state.session;
-	};
-	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SessionsNew);
-
-/***/ },
-/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -32431,6 +32192,113 @@
 
 
 /***/ },
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	var _reactRouterRedux = __webpack_require__(227);
+	
+	var _utils = __webpack_require__(268);
+	
+	var _current_board = __webpack_require__(284);
+	
+	var _current_board2 = _interopRequireDefault(_current_board);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Actions = {
+	  fetchBoards: function fetchBoards() {
+	    return function (dispatch) {
+	      dispatch({ type: _constants2.default.BOARDS_FETCHING });
+	
+	      (0, _utils.httpGet)('/api/v1/boards').then(function (data) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_RECEIVED,
+	          ownedBoards: data.owned_boards
+	        });
+	      });
+	    };
+	  },
+	  showForm: function showForm(show) {
+	    return function (dispatch) {
+	      dispatch({
+	        type: _constants2.default.BOARDS_SHOW_FORM,
+	        show: show
+	      });
+	    };
+	  },
+	  create: function create(data) {
+	    return function (dispatch) {
+	      (0, _utils.httpPost)('/api/v1/boards', { board: data }).then(function (data) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_NEW_BOARD_CREATED,
+	          board: data
+	        });
+	        dispatch((0, _reactRouterRedux.push)('/boards/' + data.id));
+	      }).catch(function (error) {
+	        error.response.json().then(function (json) {
+	          dispatch({
+	            type: _constants2.default.BOARDS_CREATE_ERROR,
+	            errors: json.errors
+	          });
+	        });
+	      });
+	    };
+	  }
+	};
+	
+	exports.default = Actions;
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Actions = {
+	  connectToChannel: function connectToChannel(socket, boardId) {
+	    return function (dispatch) {
+	      var channel = socket.channel('boards:' + boardId);
+	
+	      dispatch({ type: _constants2.default.CURRENT_BOARD_FETCHING });
+	
+	      channel.join().receive('ok', function (response) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_SET_CURRENT_BOARD,
+	          board: response.board
+	        });
+	
+	        dispatch({
+	          type: _constants2.default.CURRENT_BOARD_CONNECTED_TO_CHANNEL,
+	          channel: channel
+	        });
+	      });
+	    };
+	  }
+	};
+	
+	exports.default = Actions;
+
+/***/ },
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -32451,11 +32319,11 @@
 	
 	var _reactPageClick2 = _interopRequireDefault(_reactPageClick);
 	
-	var _boards = __webpack_require__(290);
+	var _boards = __webpack_require__(283);
 	
 	var _boards2 = _interopRequireDefault(_boards);
 	
-	var _utils = __webpack_require__(267);
+	var _utils = __webpack_require__(268);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32465,8 +32333,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var BoardForm = function (_ReactComponent) {
-	  _inherits(BoardForm, _ReactComponent);
+	var BoardForm = function (_React$Component) {
+	  _inherits(BoardForm, _React$Component);
 	
 	  function BoardForm() {
 	    _classCallCheck(this, BoardForm);
@@ -32545,7 +32413,7 @@
 	  }]);
 	
 	  return BoardForm;
-	}(ReactComponent);
+	}(_react2.default.Component);
 	
 	exports.default = BoardForm;
 
@@ -32746,62 +32614,138 @@
 	  value: true
 	});
 	
-	var _constants = __webpack_require__(251);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _constants2 = _interopRequireDefault(_constants);
+	var _react = __webpack_require__(6);
 	
-	var _reactRouterRedux = __webpack_require__(227);
+	var _react2 = _interopRequireDefault(_react);
 	
-	var _utils = __webpack_require__(267);
+	var _reactRedux = __webpack_require__(255);
 	
-	var _current_board = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./current_board\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _reactRouter = __webpack_require__(164);
 	
-	var _current_board2 = _interopRequireDefault(_current_board);
+	var _utils = __webpack_require__(268);
+	
+	var _registrations = __webpack_require__(291);
+	
+	var _registrations2 = _interopRequireDefault(_registrations);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Actions = {
-	  fetchBoards: function fetchBoards() {
-	    return function (dispatch) {
-	      dispatch({ type: _constants2.default.BOARDS_FETCHING });
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	      (0, _utils.httpGet)('/api/v1/boards').then(function (data) {
-	        dispatch({
-	          type: _constants2.default.BOARDS_RECEIVED,
-	          ownedBoards: data.owned_boards
-	        });
-	      });
-	    };
-	  },
-	  showForm: function showForm(show) {
-	    return function (dispatch) {
-	      dispatch({
-	        type: _constants2.default.BOARDS_SHOW_FORM,
-	        show: show
-	      });
-	    };
-	  },
-	  create: function create(data) {
-	    return function (dispatch) {
-	      (0, _utils.httpPost)('/api/v1/boards', { board: data }).then(function (data) {
-	        dispatch({
-	          type: _constants2.default.BOARDS_NEW_BOARD_CREATED,
-	          board: data
-	        });
-	        dispatch((0, _reactRouterRedux.push)('/boards/' + data.id));
-	      }).catch(function (error) {
-	        error.response.json().then(function (json) {
-	          dispatch({
-	            type: _constants2.default.BOARDS_CREATE_ERROR,
-	            errors: json.errors
-	          });
-	        });
-	      });
-	    };
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RegistrationsNew = function (_React$Component) {
+	  _inherits(RegistrationsNew, _React$Component);
+	
+	  function RegistrationsNew() {
+	    _classCallCheck(this, RegistrationsNew);
+	
+	    return _possibleConstructorReturn(this, (RegistrationsNew.__proto__ || Object.getPrototypeOf(RegistrationsNew)).apply(this, arguments));
 	  }
+	
+	  _createClass(RegistrationsNew, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      (0, _utils.setDocumentTitle)('Sign up');
+	    }
+	  }, {
+	    key: '_handleSubmit',
+	    value: function _handleSubmit(e) {
+	      e.preventDefault();
+	
+	      var dispatch = this.props.dispatch;
+	
+	
+	      var data = {
+	        first_name: this.refs.firstName.value,
+	        last_name: this.refs.last_name.value,
+	        email: this.refs.email.value,
+	        password: this.refs.password.value,
+	        password_confirmation: this.refs.passwordConfirmation.value
+	      };
+	
+	      dispatch(_registrations2.default.signUp(data));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var errors = this.props.errors;
+	
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'view-container registrations new' },
+	        _react2.default.createElement(
+	          'main',
+	          null,
+	          _react2.default.createElement(
+	            'header',
+	            null,
+	            _react2.default.createElement('div', { className: 'logo' })
+	          ),
+	          _react2.default.createElement(
+	            'form',
+	            { onSubmit: this._handleSubmit.bind(this) },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'firstName', type: 'text', placeholder: 'First Name', require: true }),
+	              (0, _utils.renderErrorsFor)(errors, 'first_name')
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'lastName', type: 'text', placeholder: 'Last Name', require: true }),
+	              (0, _utils.renderErrorsFor)(errors, 'last_name')
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'email', type: 'text', placeholder: 'Email', require: true }),
+	              (0, _utils.renderErrorsFor)(errors, 'email')
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'password', type: 'text', placeholder: 'Password', require: true }),
+	              (0, _utils.renderErrorsFor)(errors, 'password')
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'passwordConfirmation', type: 'text', placeholder: 'Confirm password', require: true }),
+	              (0, _utils.renderErrorsFor)(errors, 'password_confirmation')
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'submit' },
+	              'Sign up'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/sign_in' },
+	            'Sign in'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return RegistrationsNew;
+	}(_react2.default.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    errors: state.registration.errors
+	  };
 	};
 	
-	exports.default = Actions;
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(RegistrationsNew);
 
 /***/ },
 /* 291 */
@@ -32813,44 +32757,309 @@
 	  value: true
 	});
 	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	exports.default = reducer;
+	var _reactRouterRedux = __webpack_require__(227);
 	
 	var _constants = __webpack_require__(251);
 	
 	var _constants2 = _interopRequireDefault(_constants);
 	
+	var _utils = __webpack_require__(268);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var initialState = {
-	  ownedBoards: [],
-	  showForm: false,
-	  formErrors: null,
-	  fetching: true
+	var Actions = {};
+	
+	Actions.signUp = function (data) {
+	  return function (dispatch) {
+	    (0, _utils.httpPost)('/api/v1/registrations', { user: data }).then(function (data) {
+	      localStorage.setItem('phoenixAuthToken', data.jwt);
+	
+	      dispatch({
+	        type: _constants2.default.CURRENT_USER,
+	        currentUser: data.user
+	      });
+	
+	      dispatch((0, _reactRouterRedux.pushPath)('/'));
+	    }).catch(function (error) {
+	      error.response.json().then(function (errorJSON) {
+	        dispatch({
+	          type: Constnats.REGISTRATIONS_ERROR,
+	          errors: errorJSON.errors
+	        });
+	      });
+	    });
+	  };
 	};
 	
-	function reducer() {
-	  var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
-	  var action = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	exports.default = Actions;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 	
-	  switch (action.type) {
-	    case _constants2.default.BOARDS_FETCHING:
-	      return _extends({}, state, { fetching: true });
-	    case _constants2.default.BOARDS_RECEIVED:
-	      return _extends({}, state, { ownedBoards: action.ownedBoards, fetching: false });
-	    case _constants2.default.BOARDS_SHOW_FORM:
-	      return _extends({}, state, { showForm: action.show });
-	    case _constants2.default.BOARDS_CREATE_ERROR:
-	      return _extends({}, state, { formErrors: action.errors });
-	    case _constants2.default.BOARdS_NEW_BOARD_CREATED:
-	      var ownedBoards = state.ownedBoards;
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 	
-	      return _extends({}, state, { ownedBoards: [action.board].concat(ownedBoards) });
-	    default:
-	      return state;
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(255);
+	
+	var _reactRouter = __webpack_require__(164);
+	
+	var _utils = __webpack_require__(268);
+	
+	var _sessions = __webpack_require__(266);
+	
+	var _sessions2 = _interopRequireDefault(_sessions);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SessionsNew = function (_React$Component) {
+	  _inherits(SessionsNew, _React$Component);
+	
+	  function SessionsNew() {
+	    _classCallCheck(this, SessionsNew);
+	
+	    return _possibleConstructorReturn(this, (SessionsNew.__proto__ || Object.getPrototypeOf(SessionsNew)).apply(this, arguments));
 	  }
-	}
+	
+	  _createClass(SessionsNew, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      (0, _utils.setDocumentTitle)('Sign in');
+	    }
+	  }, {
+	    key: '_handleSubmit',
+	    value: function _handleSubmit(e) {
+	      e.preventDefault();
+	
+	      var _refs = this.refs;
+	      var email = _refs.email;
+	      var password = _refs.password;
+	      var dispatch = this.props.dispatch;
+	
+	
+	      dispatch(_sessions2.default.signIn(email.value, password.value));
+	    }
+	  }, {
+	    key: '_renderError',
+	    value: function _renderError() {
+	      var error = this.props.error;
+	
+	
+	      if (!error) return false;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'error' },
+	        error
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'view-container sessions new' },
+	        _react2.default.createElement(
+	          'main',
+	          null,
+	          _react2.default.createElement(
+	            'header',
+	            null,
+	            _react2.default.createElement('div', { className: 'logo' })
+	          ),
+	          _react2.default.createElement(
+	            'form',
+	            { onSubmit: this._handleSubmit.bind(this) },
+	            this._renderError.call(this),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'email', type: 'Email', placeholder: 'Email', required: 'true', defaultValue: 'john@phoenix-trello.com' })
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'field' },
+	              _react2.default.createElement('input', { ref: 'password', type: 'password', placeholder: 'Password', required: 'true', defaultValue: '12345678' })
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { type: 'submit' },
+	              'Sign in'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _reactRouter.Link,
+	            { to: '/sign_up' },
+	            'Create new account'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SessionsNew;
+	}(_react2.default.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return state.session;
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(SessionsNew);
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(6);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(255);
+	
+	var _current_board = __webpack_require__(284);
+	
+	var _current_board2 = _interopRequireDefault(_current_board);
+	
+	var _constants = __webpack_require__(251);
+	
+	var _constants2 = _interopRequireDefault(_constants);
+	
+	var _utils = __webpack_require__(268);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// import BoardMembers from '../../components/boards/members';
+	
+	var BoardShowView = function (_React$Component) {
+	  _inherits(BoardShowView, _React$Component);
+	
+	  function BoardShowView() {
+	    _classCallCheck(this, BoardShowView);
+	
+	    return _possibleConstructorReturn(this, (BoardShowView.__proto__ || Object.getPrototypeOf(BoardShowView)).apply(this, arguments));
+	  }
+	
+	  _createClass(BoardShowView, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var socket = this.props.socket;
+	
+	
+	      if (!socket) {
+	        return false;
+	      }
+	
+	      this.props.dispatch(_current_board2.default.connectToChannel(socket, this.props.params.id));
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.props.dispatch(_current_board2.default.leaveChannel(this.props.currentBoard.channel));
+	    }
+	  }, {
+	    key: '_renderMembers',
+	    value: function _renderMembers() {
+	      var _props$currentBoard = this.props.currentBoard;
+	      var connectedUsers = _props$currentBoard.connectedUsers;
+	      var showUsersForm = _props$currentBoard.showUsersForm;
+	      var channel = _props$currentBoard.channel;
+	      var error = _props$currentBoard.error;
+	      var dispatch = this.props.dispatch;
+	
+	      var members = this.props.currentBoard.members;
+	      var currentUserIsOwner = this.props.currentBoard.user.id === this.props.currentUser.id;
+	
+	      return _react2.default.createElement(BoardMembers, {
+	        dispatch: dispatch,
+	        channel: channel,
+	        currentUserIsOwner: currentUserIsOwner,
+	        members: members,
+	        connectedUsers: connectedUsers,
+	        error: error,
+	        show: showUsersForm
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props$currentBoard2 = this.props.currentBoard;
+	      var fetching = _props$currentBoard2.fetching;
+	      var name = _props$currentBoard2.name;
+	
+	
+	      if (fetching) return _react2.default.createElement(
+	        'div',
+	        { className: 'view-container boards show' },
+	        _react2.default.createElement('i', { className: 'fa fa-spinner fa-spin' })
+	      );
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'view-container boards show' },
+	        _react2.default.createElement(
+	          'header',
+	          { className: 'view-header' },
+	          _react2.default.createElement(
+	            'h3',
+	            null,
+	            name
+	          ),
+	          this._renderMembers.call(this)
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'canvas-wrapper' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'canvas' },
+	            _react2.default.createElement('div', { className: 'lists-wrapper' })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return BoardShowView;
+	}(_react2.default.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    currentBoard: state.currentBoard,
+	    socket: state.session.socket,
+	    currentUser: state.session.currentUser
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(BoardShowView);
 
 /***/ }
 /******/ ]);
