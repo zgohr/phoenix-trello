@@ -27074,10 +27074,16 @@
 	  BOARDS_SHOW_FORM: 'BOARDS_SHOW_FORM',
 	  BOARDS_NEW_BOARD_CREATED: 'BOARDS_NEW_BOARD_CREATED',
 	  BOARDS_CREATE_ERROR: 'BOARDS_CREATE_ERROR',
+	  BOARDS_ADDED: 'BOARDS_ADDED',
 	
 	  CURRENT_BOARD_FETCHING: 'CURRENT_BOARD_FETCHING',
 	  BOARDS_SET_CURRENT_BOARD: 'BOARDS_SET_CURRENT_BOARD',
-	  CURRENT_BOARD_CONNECTED_TO_CHANNEL: 'CURRENT_BOARD_CONNECTED_TO_CHANNEL'
+	  CURRENT_BOARD_CONNECTED_TO_CHANNEL: 'CURRENT_BOARD_CONNECTED_TO_CHANNEL',
+	
+	  CURRENT_BOARD_SHOW_MEMBERS_FORM: 'CURRENT_BOARD_SHOW_MEMBERS_FORM',
+	  CURRENT_BOARD_ADD_MEMBER_ERROR: 'CURRENT_BOARD_ADD_MEMBER_ERROR',
+	
+	  CURRENT_BOARD_MEMBER_ADDED: 'CURRENT_BOARD_MEMBER_ADDED'
 	};
 	
 	exports.default = Constants;
@@ -27162,6 +27168,10 @@
 	      var ownedBoards = state.ownedBoards;
 	
 	      return _extends({}, state, { ownedBoards: [action.board].concat(ownedBoards) });
+	    case Constnats.BOARDS_ADDED:
+	      var invitedBoards = state.invitedBoards;
+	
+	      return _extends({}, state, { invitedBoards: [action.board].concat(invitedBoards) });
 	    default:
 	      return state;
 	  }
@@ -32292,8 +32302,43 @@
 	          channel: channel
 	        });
 	      });
+	
+	      channel.on('member:added', function (msg) {
+	        dispatch({
+	          type: _constants2.default.CURRENT_BOARD_MEMBER_ADDED,
+	          user: msg.user
+	        });
+	      });
+	
+	      channel.on('boards:add', function (msg) {
+	        dispatch({
+	          type: _constants2.default.BOARDS_ADDED,
+	          board: msg.board
+	        });
+	      });
+	    };
+	  },
+	
+	  showMembersFrom: function showMembersFrom(show) {
+	    return function (dispatch) {
+	      dispatch({
+	        type: _constants2.default.CURRENT_BOARD_SHOW_MEMBERS_FORM,
+	        show: show
+	      });
+	    };
+	  },
+	
+	  addNewMember: function addNewMember(channel, email) {
+	    return function (dispatch) {
+	      channel.push('members:add', { email: email }).receive('error', function (data) {
+	        dispatch({
+	          type: _constants2.default.CURRENT_BOARD_ADD_MEMBER_ERROR,
+	          error: data.error
+	        });
+	      });
 	    };
 	  }
+	
 	};
 	
 	exports.default = Actions;

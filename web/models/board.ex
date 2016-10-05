@@ -2,13 +2,15 @@ defmodule PhoenixTrello.Board do
   use PhoenixTrello.Web, :model
 
   alias __MODULE__
-  alias PhoenixTrello.User
+  alias PhoenixTrello.{User, UserBoard}
 
   @derive {Poison.Encoder, only: [:id, :name, :user]}
 
   schema "boards" do
     field :name, :string
     belongs_to :user, User
+    has_many :user_boards, UserBoard
+    has_many :members, through: [:user_boards, :user]
 
     timestamps()
   end
