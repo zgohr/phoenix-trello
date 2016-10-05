@@ -48,10 +48,10 @@ class HomeIndexView extends React.Component {
 
   _renderBoards(boards) {
     return boards.map((board) => {
-      return <BoardCard
-              key={board.id}
-              dispatch={this.props.dispatch}
-              {...board} />
+      // return <BoardCard
+      //         key={board.id}
+      //         dispatch={this.props.dispatch}
+      //         {...board} />
     });
   }
 

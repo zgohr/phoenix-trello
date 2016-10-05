@@ -20,7 +20,7 @@ export default function reducer(state = initialState, action = {}) {
     case Constants.BOARdS_NEW_BOARD_CREATED:
       const { ownedBoards } = state;
       return { ...state, ownedBoards: [action.board].concat(ownedBoards) };
-    case Constnats.BOARDS_ADDED:
+    case Constants.BOARDS_ADDED:
       const { invitedBoards } = state;
       return { ...state, invitedBoards: [action.board].concat(invitedBoards) };
     default:

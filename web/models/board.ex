@@ -26,6 +26,10 @@ defmodule PhoenixTrello.Board do
     |> cast(params, @required_fields, @optional_fields)
   end
 
+  def slug_id(board) do
+    "#{board.id}-todo"
+  end
+
   def preload_all(query) do
     from b in query, preload: [:user]
   end

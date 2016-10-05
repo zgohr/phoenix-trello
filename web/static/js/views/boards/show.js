@@ -4,7 +4,7 @@ import { connect }  from 'react-redux';
 import Actions from '../../actions/current_board';
 import Constants from '../../constants';
 import { setDocumentTitle } from '../../utils';
-// import BoardMembers from '../../components/boards/members';
+import BoardMembers from '../../components/boards/members';
 
 class BoardShowView extends React.Component {
   componentDidMount() {
@@ -18,7 +18,9 @@ class BoardShowView extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(Actions.leaveChannel(this.props.currentBoard.channel));
+    const { dispatch, currentBoard } = this.props;
+
+    this.props.dispatch(Actions.leaveChannel(current_board.channel));
   }
 
   _renderMembers() {
@@ -47,7 +49,7 @@ class BoardShowView extends React.Component {
       <div className="view-container boards show">
         <i className="fa fa-spinner fa-spin" />
       </div>
-    )
+    );
 
     return (
       <div className="view-container boards show">
