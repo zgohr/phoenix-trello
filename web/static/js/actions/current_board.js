@@ -46,6 +46,11 @@ const Actions = {
           msg: msg.users,
         });
       });
+
+      dispatch({
+        type: Constants.CURRENT_BOARD_CONNECTED_TO_CHANNEL,
+        channel: channel,
+      });
     };
   },
 

@@ -1,11 +1,35 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Actions from '../actions/sessions';
 import ReactGravatar from 'react-gravatar';
+import PageClick from 'react-page-click';
+import { push } from 'react-router-redux';
 
-export default class Header extends React.Component {
-  constructor() {
-    super();
+import SessionActions from '../actions/sessions';
+import HeaderActions from '../actions/header';
+
+class Header extends React.Component {
+  _handleBoardsClick(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+    const { ownedBoards } = this.props.boards;
+
+    if (ownedBoards.length != 0) {
+      dispatch(HeaderActions.showBoards(true));
+    } else {
+      dispatch(push('/'));
+    }
+  }
+
+  _renderBoards() {
+    const { dispatch, currentBoard, socket, header } = this.props;
+
+    if (!header.showBoards) return false;
+
+    const { ownedBoards } = this.props.boards;
+
+    // TODO
   }
 
   _renderCurrentUser() {
@@ -36,16 +60,17 @@ export default class Header extends React.Component {
 
   _handleSignOutClick(e) {
     e.preventDefault();
-    this.props.dispatch(Actions.signOut());
+    this.props.dispatch(SessionActions.signOut());
   }
 
   render() {
     return (
       <header className="main-header">
-        <nav>
+        <nav id="boards_nav">
           <ul>
             <li>
-              <Link to="/"><i className="fa fa-columns"/> Boards</Link>
+              <a href="#" onClick={::this._handleBoardsClick}><i className="fa fa-columns"/> Boards</a>
+              {::this._renderBoards()}
             </li>
           </ul>
         </nav>
@@ -66,3 +91,13 @@ export default class Header extends React.Component {
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  currentUser: state.session.currentUser,
+  socket: state.session.socket,
+  boards: state.boards,
+  currentBoard: state.currentBoard,
+  header: state.header,
+});
+
+export default connect(mapStateToProps)(Header);

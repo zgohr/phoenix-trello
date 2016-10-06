@@ -6,7 +6,7 @@ import Constants from '../../constants';
 import { setDocumentTitle } from '../../utils';
 import BoardMembers from '../../components/boards/members';
 
-class BoardShowView extends React.Component {
+class BoardsShowView extends React.Component {
   componentDidMount() {
     const { socket } = this.props;
 
@@ -17,10 +17,23 @@ class BoardShowView extends React.Component {
     this.props.dispatch(Actions.connectToChannel(socket, this.props.params.id));
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    const { socket } = this.props;
+    const { currentBoard } = nextProps;
+
+    if (currentBoard.name !== undefined) setDocumentTitle(currentBoard.name);
+
+    if (socket) {
+      return false;
+    }
+
+    this.props.dispatch(Actions.connectToChannel(nextProps.socket, this.props.params.id));
+  }
+
   componentWillUnmount() {
     const { dispatch, currentBoard } = this.props;
 
-    this.props.dispatch(Actions.leaveChannel(current_board.channel));
+    this.props.dispatch(Actions.leaveChannel(currentBoard.channel));
   }
 
   _renderMembers() {
@@ -75,4 +88,4 @@ const mapStateToProps = (state) => ({
   currentUser: state.session.currentUser,
 });
 
-export default connect(mapStateToProps)(BoardShowView);
+export default connect(mapStateToProps)(BoardsShowView);

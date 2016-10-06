@@ -26,9 +26,7 @@ export default class BoardMembers extends React.Component {
 
     return (
       <li>
-        <a onClick={::this._handleAddNewClick} className="add-new" href="#">
-          <i className="fa fa-plus"/>
-        </a>
+        <a onClick={::this._handleAddNewClick} className="add-new" href="#"><i className="fa fa-plus"/></a>
         {::this._renderForm()}
       </li>
     );
@@ -83,3 +81,5 @@ export default class BoardMembers extends React.Component {
     );
   }
 }
+
+BoardMembers.propTypes = {};

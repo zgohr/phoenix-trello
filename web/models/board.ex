@@ -4,8 +4,6 @@ defmodule PhoenixTrello.Board do
   alias __MODULE__
   alias PhoenixTrello.{User, UserBoard}
 
-  @derive {Poison.Encoder, only: [:id, :name, :user]}
-
   schema "boards" do
     field :name, :string
     belongs_to :user, User
@@ -31,6 +29,15 @@ defmodule PhoenixTrello.Board do
   end
 
   def preload_all(query) do
-    from b in query, preload: [:user]
+    from b in query, preload: [:user, :members]
+  end
+end
+
+defimpl Poison.Encoder, for: PhoenixTrello.Board do
+  def encode(model, options) do
+    model
+    |> Map.take([:name, :user, :members, :id])
+#    |> Map.put(:id, PhoenixTrello.Board.slug_id(model))
+    |> Poison.Encoder.encode(options)
   end
 end
