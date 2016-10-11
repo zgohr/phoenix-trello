@@ -10,15 +10,14 @@ class AuthenticatedContainer extends React.Component {
   }
 
   render() {
-    const { currentUser, dispatch } = this.props;
+    const { currentUser, dispatch, boards, socket, currentBoard } = this.props;
 
     if (!currentUser) return false;
 
     return (
-      <div className="application-container">
-        <Header
-          currentUser={currentUser}
-          dispatch={dispatch} />
+      <div id="authentication_container" className="application-container">
+        <Header/>
+
         <div className="main-container">
           {this.props.children}
         </div>
@@ -30,6 +29,9 @@ class AuthenticatedContainer extends React.Component {
 const mapStateToProps = (state) => ({
   currentUser: state.session.currentUser,
   socket: state.session.socket,
+  channel: state.session.channel,
+  boards: state.boards,
+  currentBoard: state.currentBoard,
 });
 
 export default connect(mapStateToProps)(AuthenticatedContainer);

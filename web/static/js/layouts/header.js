@@ -29,7 +29,23 @@ class Header extends React.Component {
 
     const { ownedBoards } = this.props.boards;
 
-    // TODO
+    return (
+      <PageClick onClick={::this._hideBoards}>
+        <div className="dropdown">
+          TODO
+          <ul className="options">
+            <li>
+              <Link to="/" onClick={::this._hideBoards}>View all boards</Link>
+            </li>
+          </ul>
+        </div>
+      </PageClick>
+    )
+  }
+
+  _hideBoards() {
+    const { dispatch } = this.props;
+    dispatch(HeaderActions.showBoards(false))
   }
 
   _renderCurrentUser() {

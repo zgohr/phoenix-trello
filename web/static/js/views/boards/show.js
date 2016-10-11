@@ -73,9 +73,11 @@ class BoardsShowView extends React.Component {
         <div className="canvas-wrapper">
           <div className="canvas">
             <div className="lists-wrapper">
+              TODO
             </div>
           </div>
         </div>
+        {this.props.children}
       </div>
     )
 
