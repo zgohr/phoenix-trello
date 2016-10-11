@@ -68,6 +68,23 @@ class HomeIndexView extends React.Component {
     );
   }
 
+  _renderOtherBoards() {
+    const { invitedBoards } = this.props;
+
+    if (invitedBoards.length === 0 ) return false;
+
+    return (
+      <section>
+        <header className="view-header">
+          <h3><i className="fa fa-users" /> Other boards</h3>
+        </header>
+        <div className="boards-wrapper">
+          {::this._renderBoards(invitedBoards)}
+        </div>
+      </section>
+    );
+  }
+
   _renderAddButton() {
     return (
       <div className="board add-new" onClick={::this._handleAddNewClick}>
@@ -90,6 +107,7 @@ class HomeIndexView extends React.Component {
     return (
       <div className="view-container boards index">
         {::this._renderOwnedBoards()}
+        {::this._renderOtherBoards()}
       </div>
     )
   }

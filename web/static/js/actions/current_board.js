@@ -60,7 +60,7 @@ const Actions = {
     }
   },
 
-  showMembersFrom: (show) => {
+  showMembersForm: (show) => {
     return dispatch => {
       dispatch({
         type: Constants.CURRENT_BOARD_SHOW_MEMBERS_FORM,

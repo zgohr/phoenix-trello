@@ -6,6 +6,7 @@ import Actions from '../../actions/current_board';
 
 export default class BoardMembers extends React.Component {
   _renderUsers() {
+    console.log(this.props.members);
     return this.props.members.map((member) => {
       const index = this.props.connectedUsers.findIndex((cu) => {
         return cu === member.id;
@@ -39,11 +40,11 @@ export default class BoardMembers extends React.Component {
       <PageClick onClick={::this._handleCancelClick}>
         <ul className="drop-down active">
           <li>
-            <form submit={::this._handleSubmit()}>
+            <form onSubmit={::this._handleSubmit}>
               <h4>Add new members</h4>
               {::this._renderError()}
               <input ref="email" type="email" required={true} placeholder="Member email"/>
-              <button type="submit">Add member</button> or <a onClick={::this._handleCancelClcik()} href="#">cancel</a>
+              <button type="submit">Add member</button> or <a onClick={::this._handleCancelClick} href="#">cancel</a>
             </form>
           </li>
         </ul>
@@ -64,6 +65,18 @@ export default class BoardMembers extends React.Component {
   }
 
   _handleAddNewClick(e) {
+    e.preventDefault();
+
+    this.props.dispatch(Actions.showMembersForm(true));
+  }
+
+  _handleCancelClick(e) {
+    e.preventDefault();
+
+    this.props.dispatch(Actions.showMembersForm(false));
+  }
+
+  _handleSubmit(e) {
     e.preventDefault();
 
     const { email } = this.refs;

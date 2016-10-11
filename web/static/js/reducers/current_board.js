@@ -25,6 +25,9 @@ export default function reducer(state = initialState, action = {}) {
       members.push(action.user);
       return { ...state, members: members, showUsersForm: false };
 
+    case Constants.CURRENT_BOARD_SHOW_MEMBERS_FORM:
+      return { ...state, showUsersForm: action.show, error: false };
+
     default:
       return state;
   }

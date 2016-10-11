@@ -24,6 +24,11 @@ defmodule PhoenixTrello.Board do
     |> cast(params, @required_fields, @optional_fields)
   end
 
+  def not_owned_by(query \\ %Board{}, user_id) do
+    from b in query,
+    where: b.user_id != ^user_id
+  end
+
   def slug_id(board) do
     "#{board.id}-todo"
   end

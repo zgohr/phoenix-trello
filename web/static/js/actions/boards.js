@@ -12,7 +12,8 @@ const Actions = {
         .then((data) => {
           dispatch({
             type: Constants.BOARDS_RECEIVED,
-            ownedBoards: data.owned_boards
+            ownedBoards: data.owned_boards,
+            invitedBoards: data.invited_boards,
           });
         });
     };
